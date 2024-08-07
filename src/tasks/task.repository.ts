@@ -25,9 +25,11 @@ export class TaskRepository extends Repository<Task> {
         dueDate:
           dueDate ||
           new Date(new Date().setFullYear(new Date().getFullYear() + 1)),
+        hide: false,
       });
       await this.save(taskCreated);
     } catch (error) {
+      console.log(error);
       throw new InternalServerErrorException(error);
     }
   }

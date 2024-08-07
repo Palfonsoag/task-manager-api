@@ -58,6 +58,22 @@ $ pnpm run test:e2e
 $ pnpm run test:cov
 ```
 
+## Running Migrations
+
+```bash
+# run migration
+$ pnpm typeorm:migrate <data-source-path> 
+
+# example
+$ pnpm typeorm:migrate ./src/data-source.ts
+
+# revert migration
+$ pnpm typeorm:revert <data-source-path> 
+
+# example
+$ pnpm typeorm:revert ./src/data-source.ts
+```
+
 ## Support
 
 Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
