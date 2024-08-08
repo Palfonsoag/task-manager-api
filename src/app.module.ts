@@ -14,7 +14,7 @@ import { AuthModule } from './auth/auth.module';
       password: 'postgres',
       database: 'tasks-management',
       autoLoadEntities: true,
-      //synchronize: true,
+      synchronize: true,
     }),
     TasksModule,
     UserModule,

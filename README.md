@@ -61,14 +61,22 @@ $ pnpm run test:cov
 ## Running Migrations
 
 ```bash
+# create a migration
+
+$ pnpm typeorm migration:create <migrations-directory-path>/MigrationsName
+
+# example
+
+$ pnpm typeorm migration:create ./src/db/migrations/MigrationCreateExample
+
 # run migration
-$ pnpm typeorm:migrate <data-source-path> 
+$ pnpm typeorm:migrate <data-source-path>
 
 # example
 $ pnpm typeorm:migrate ./src/data-source.ts
 
 # revert migration
-$ pnpm typeorm:revert <data-source-path> 
+$ pnpm typeorm:revert <data-source-path>
 
 # example
 $ pnpm typeorm:revert ./src/data-source.ts

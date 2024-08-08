@@ -2,12 +2,15 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToOne,
   PrimaryGeneratedColumn,
   Repository,
 } from 'typeorm';
 import { Priority, TasksStatus } from './tasks-enums';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { InternalServerErrorException } from '@nestjs/common';
+import { User } from 'src/user/user.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class Task {
@@ -23,12 +26,6 @@ export class Task {
   @Column('enum', { enum: TasksStatus, enumName: 'Status Enum' })
   status: TasksStatus;
 
-  @Column()
-  assignedTo?: string;
-
-  @Column()
-  createdBy: string;
-
   @Column('enum', { enum: Priority, enumName: 'Priority Enum' })
   priority: Priority;
 
@@ -40,4 +37,12 @@ export class Task {
 
   @Column('boolean')
   hide: Boolean;
+
+  @ManyToOne((_type) => User, (user) => user.tasks, { eager: true })
+  @Exclude({ toPlainOnly: true })
+  assignedTo?: User;
+
+  @ManyToOne((_type) => User, (user) => user.tasksCreated, { eager: true })
+  @Exclude({ toPlainOnly: true })
+  createdBy: User;
 }

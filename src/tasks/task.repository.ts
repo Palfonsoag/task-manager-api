@@ -4,6 +4,7 @@ import { CreateTaskDto } from './dto/create-task.dto';
 import { Priority, TasksStatus } from './tasks-enums';
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { GetTasksFilterDto } from './dto/get-tasks-filter.dto';
+import { User } from 'src/user/user.entity';
 
 @Injectable()
 export class TaskRepository extends Repository<Task> {
@@ -11,16 +12,15 @@ export class TaskRepository extends Repository<Task> {
     super(Task, dataSource.createEntityManager());
   }
 
-  async createTask(task: CreateTaskDto): Promise<void> {
+  async createTask(task: CreateTaskDto, user: User): Promise<void> {
     try {
-      const { title, description, createdBy, assignedTo, priority, dueDate } =
-        task;
+      const { title, description, assignedTo, priority, dueDate } = task;
       const taskCreated = this.create({
         title,
         description,
         status: assignedTo ? TasksStatus.OPEN : TasksStatus.UNASSIGNED,
-        createdBy,
-        assignedTo: assignedTo || '',
+        createdBy: user,
+        assignedTo: assignedTo || undefined,
         priority: priority || Priority.P3,
         dueDate:
           dueDate ||
@@ -34,9 +34,14 @@ export class TaskRepository extends Repository<Task> {
     }
   }
 
-  async getTasks(filterDto: GetTasksFilterDto): Promise<Task[]> {
-    const { search, status, assignedTo, priority } = filterDto;
+  async getTasks(filterDto: GetTasksFilterDto, user: User): Promise<Task[]> {
+    const { search, status, assignedTo, priority, createdBy } = filterDto;
     const query = this.createQueryBuilder('task');
+
+    query.where({ hide: false });
+    if (createdBy) {
+      query.andWhere({ createdBy: user });
+    }
 
     if (status) {
       query.andWhere('task.status = :status', { status });
@@ -47,11 +52,12 @@ export class TaskRepository extends Repository<Task> {
     }
 
     if (assignedTo) {
+      query.andWhere({ assignedTo });
     }
 
     if (search) {
       query.andWhere(
-        'LOWER(task.title) LIKE LOWER(:search) OR LOWER(task.description) LIKE LOWER(:search)',
+        '(LOWER(task.title) LIKE LOWER(:search) OR LOWER(task.description) LIKE LOWER(:search))',
         { search: `%${search}%` },
       );
     }
