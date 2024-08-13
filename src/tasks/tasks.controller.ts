@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Logger,
   Param,
   Patch,
   Post,
@@ -24,6 +25,7 @@ import { HideTaskDto } from './dto/hide-task.dto';
 @Controller('tasks')
 @UseGuards(AuthGuard())
 export class TasksController {
+  private logger = new Logger('TasksController');
   constructor(private tasksService: TasksService) {}
 
   @Get()
@@ -31,6 +33,9 @@ export class TasksController {
     @Query() filterDto: GetTasksFilterDto,
     @GetUser() user: User,
   ): Promise<Task[]> {
+    this.logger.verbose(
+      `User ${user.username} retrieving all tasks with Filters ${JSON.stringify(filterDto)} `,
+    );
     return this.tasksService.getTasks(filterDto, user);
   }
 
@@ -44,6 +49,9 @@ export class TasksController {
     @Body() createTaskDto: CreateTaskDto,
     @GetUser() user: User,
   ): Promise<void> {
+    this.logger.verbose(
+      `User ${user.username} creating ${JSON.stringify(createTaskDto)} task`,
+    );
     return this.tasksService.createTask(createTaskDto, user);
   }
 
