@@ -7,9 +7,7 @@ import {
   Repository,
 } from 'typeorm';
 import { Priority, TasksStatus } from './tasks-enums';
-import { CreateTaskDto } from './dto/create-task.dto';
-import { InternalServerErrorException } from '@nestjs/common';
-import { User } from 'src/user/user.entity';
+import { User } from '../user/user.entity';
 import { Exclude } from 'class-transformer';
 
 @Entity()

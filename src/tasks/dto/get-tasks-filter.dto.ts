@@ -1,6 +1,6 @@
 import { IsEnum, IsOptional, IsString } from 'class-validator';
 import { Priority, TasksStatus } from '../tasks-enums';
-import { User } from 'src/user/user.entity';
+import { User } from '../../user/user.entity';
 
 export class GetTasksFilterDto {
   @IsOptional()

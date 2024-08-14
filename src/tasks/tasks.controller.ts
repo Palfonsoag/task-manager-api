@@ -17,8 +17,8 @@ import { GetTasksFilterDto } from './dto/get-tasks-filter.dto';
 import { Task } from './task.entity';
 import { UpdateTaskPriorityDto } from './dto/update-task-priority.dto';
 import { AuthGuard } from '@nestjs/passport';
-import { User } from 'src/user/user.entity';
-import { GetUser } from 'src/auth/get-user.decorator';
+import { User } from '../user/user.entity';
+import { GetUser } from '../auth/get-user.decorator';
 import { UpdateTaskAssigneeDto } from './dto/update-task-assignee.dto';
 import { HideTaskDto } from './dto/hide-task.dto';
 
